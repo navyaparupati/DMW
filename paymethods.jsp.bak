@@ -1,0 +1,68 @@
+<%@ page import="java.sql.*,databaseconnection.*"%>
+<%@ include file="uheader.jsp"%>
+
+<%
+	 String m=request.getParameter("msg");
+                                                      
+                                                       if(m!=null && m.equalsIgnoreCase("succ"))
+                                                       {
+                                                               out.println("<script>alert('Operation Successfully Completed !!')</script>");
+                                                       }
+
+%>
+		  <head>
+<style>
+table, th, td {
+border:0.2px solid;
+}
+th, td {
+    padding: 5px;
+    
+	text-align: left;
+}
+</style>
+</head>
+
+<h1>Card Details</h1><br>
+<table WIDTH=100%>
+<tr><td bgcolor=#483768  WIDTH="5%"> <h4><font color=white>#<td bgcolor=#483768  ><h4><font color=white>Card Number<td bgcolor=#483768><h4><font color=white>CVV<td bgcolor=#483768><h4><font color=white>Expiry Month <td bgcolor=#483768><h4><font color=white>Expiry Year <td bgcolor=#483768><h4><font color=white> 
+
+
+
+
+<%
+
+Connection con1 = databasecon.getconnection();
+try
+{
+	String ss=null;
+	Statement st1 = con1.createStatement();
+	String sss1 = " select * from paymentmethods where email='"+session.getAttribute("users")+"'  ";
+	ResultSet rs=st1.executeQuery(sss1);
+	int i=0;
+	while(rs.next()){
+	%>
+		 <tr><td><h4><%=++i%><td><h4><%=rs.getString(2)%><td><h4><%=rs.getString(3)%><td><h4><%=rs.getString(4)%><td><h4><%=rs.getString(5)%>
+		 <td> <a href="deletepayment.jsp?id=<%=rs.getString(1)%>">Delete</a>
+
+	<%
+	}
+}
+catch(Exception e){System.out.println(e);
+e.printStackTrace();}
+%>
+
+
+
+
+</table>
+<br><br>
+<form method="post" action="createpayment.jsp">
+	<input type="submit" value="Create Payment Methods ">
+</form>
+<hr>
+<br><br><br><br><br>
+
+
+
+<%@ include file="footer.jsp"%>

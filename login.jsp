@@ -1,0 +1,42 @@
+<%@ page  import="java.sql.*" import="databaseconnection.*" import="javax.swing.JOptionPane"%>
+<%
+String pass=null,uid=null;
+
+String a = request.getParameter("uid");
+String b= request.getParameter("pwd");
+String tab= request.getParameter("type");
+String name=null,u=null,tags=null;
+
+
+
+try
+{
+
+	Connection con1 = databasecon.getconnection();
+	Statement st1 = con1.createStatement();
+	
+	String sss1 = "select * from "+tab+"  where email='"+a+"' && password='"+b+"'";
+	System.out.println(sss1);
+	ResultSet rs1=st1.executeQuery(sss1);
+	if(rs1.next())
+	{
+
+
+		tags=rs1.getString("tags");
+		name=rs1.getString("name");
+		session.setAttribute(tab+"name",name);
+		session.setAttribute(tab+"tags",tags);
+		session.setAttribute(tab,a);
+		response.sendRedirect(tab+"_home.jsp");
+		}else{
+		response.sendRedirect("index.jsp?m=fail");
+		
+		}
+}
+
+catch(Exception e1)
+{
+out.println(e1);
+}
+
+%>

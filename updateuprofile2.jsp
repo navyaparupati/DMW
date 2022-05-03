@@ -1,0 +1,49 @@
+<%@page import="java.sql.*,java.util.*,java.text.*"%>
+
+<%@page import="databaseconnection.*"%>
+<%
+String name= request.getParameter("name");
+
+String email=(String)session.getAttribute("users");
+String addr= request.getParameter("addr");
+String year= request.getParameter("year");
+String[] tags= request.	getParameterValues("tags");
+
+String tt="";
+for(String t:tags){
+tt=t+";"+tt;
+}
+System.out.println(tt);
+
+try
+{
+ResultSet rs=null;
+
+Connection con=databasecon.getconnection();
+	
+	
+PreparedStatement ps=con.prepareStatement("update users set name=?,  addr=?, dob=?, tags=? where email=?");
+
+ps.setString(1,name);
+ps.setString(2,addr);
+ps.setString(3,year);
+ps.setString(4,tt);
+ps.setString(5,email);
+
+
+ps.executeUpdate();
+
+response.sendRedirect("updateuprofile.jsp?id=succ");
+//out.print("USER REGISTERED SUCCESSFULLY");
+}
+catch(Exception e1)
+{
+out.println(e1.getMessage());
+}
+
+
+%>
+
+</body>
+</html>
+
